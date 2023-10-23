@@ -1,0 +1,13 @@
+cat << EOF > /etc/systemd/system/litd-worker.service
+[Unit]
+Description=Uxuy Lightning Network Node
+After=network.target
+
+[Service]
+User=root
+Group=root
+ExecStart=litd --configfile=/root/lnd/conf/litd.conf
+
+[Install]
+WantedBy=multiuser.target
+EOF
