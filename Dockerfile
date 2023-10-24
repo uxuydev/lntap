@@ -57,38 +57,15 @@ EXPOSE 9736 10010 10029 8089
 # COPY tls.cert /.lnd/tls.cert
 # COPY tls.key /.lnd/tls.key
 COPY start_services.sh /start_services.sh
+COPY start-lnd.sh /start-lnd.sh
+COPY start-tapd.sh /start-tapd.sh
+RUN chmod +x /start-lnd.sh
+RUN chmod +x /start-tapd.sh
 
-# COPY lnd.service /etc/systemd/system/lnd.service
+#docker run -it uxuy-lntap:latest /bin/sh
 
-RUN cat <<EOF > /etc/init.d/lnd
-#!/sbin/openrc-run
-  
-description="LND Service"
+#RUN chmod +x /etc/init.d/lnd.service
+#CMD ["/etc/init.d/lnd.service", "start"]
 
-depend() {
-    need localmount net
-    use dns logger netmount
-}
-
-command=lnd --trickledelay=5000 \
-    --debuglevel=debug \
-    --alias=mar-uxuy-lnd \
-    --rpclisten=0.0.0.0:10009 \
-    --listen=0.0.0.0:9735 \
-    --bitcoin.node=neutrino \
-    --bitcoin.active \
-    --bitcoin.mainnet \
-    --neutrino.addpeer=mainnet2-btcd.zaphq.io  \
-    --neutrino.addpeer=mainnet1-btcd.zaphq.io   \
-    --neutrino.addpeer=btcd-mainnet.lightning.computer        \
-    --neutrino.addpeer=mainnet1-btcd.zaphq.io      \
-    --neutrino.addpeer=mainnet2-btcd.zaphq.io      \
-    --neutrino.addpeer=mainnet3-btcd.zaphq.io       \
-    --neutrino.addpeer=mainnet4-btcd.zaphq.io      \
-    --neutrino.addpeer=faucet.lightning.community \
-    --feeurl=https://nodes.lightning.computer/fees/v1/btc-fee-estimates.json
-EOF
-
-# RUN chmod +x /start_services.sh
 # ENTRYPOINT ["/start_services.sh"]
 

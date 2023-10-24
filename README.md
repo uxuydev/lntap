@@ -2,37 +2,128 @@
 LnTap is Lightning & Taproot Asset All-in-One Docker, and here is the cli guide for initial version,
 We are going to provide webui to common users.
 
+Step 1:
 ```
 docker build -t lntap .
 ```
+After Docker Build Successfully, you can run the docker image.
 
+Step2:
 ```
-docker run -it lntap /bin/bash
+docker run --privileged -it uxuy-lntap:latest /bin/sh
+```
+Step 3:
+Start LND Node
+```
+./start-lnd.sh start
+```
+You can tail the log by
+```
+tail -f /var/log/lnd-service.log
 ```
 
 ## lncli create
 you can create a new wallet or import your seeds to restore your wallet.
+Step 4:
 
 if you do not have address
 ```
+lncli create
+```
+Just folow the guide to create your wallet.
+And backup your LNS Cipher Seed Mnemonic.
+
+```
+~ # lncli newaddress p2tr
+[lncli] could not load global options: unable to read macaroon path (check the network setting!): open /root/.lnd/data/chain/bitcoin/mainnet/admin.macaroon: no such file or directory
+~ # lncli create
+Input wallet password: 
+Confirm password: 
+
+Do you have an existing cipher seed mnemonic or extended master root key you want to use?
+Enter 'y' to use an existing cipher seed mnemonic, 'x' to use an extended master root key 
+or 'n' to create a new seed (Enter y/x/n): n
+
+Your cipher seed can optionally be encrypted.
+Input your passphrase if you wish to encrypt it (or press enter to proceed without a cipher seed passphrase): 
+Confirm password: 
+
+Generating fresh cipher seed...
+
+!!!YOU MUST WRITE DOWN THIS SEED TO BE ABLE TO RESTORE THE WALLET!!!
+
+---------------BEGIN LND CIPHER SEED---------------
+ 1. abandon   2. water     3. hello     4. motor 
+ 5. jealous   6. age       7. analyst   8. audit 
+ 9. vintage  10. wall     11. sauce    12. cook  
+13. crouch   14. velvet   15. analyst  16. option
+17. stadium  18. correct  19. seminar  20. blast 
+21. such     22. nice     23. charge   24. often 
+---------------END LND CIPHER SEED-----------------
+
+!!!YOU MUST WRITE DOWN THIS SEED TO BE ABLE TO RESTORE THE WALLET!!!
+
+lnd successfully initialized!
+```
+Step 5:
+Now create your TAPROOT address
+```
 lncli newaddress p2tr
 ```
+You will get your TAPROOT address, save it and transfer some BTC to it.
+```
+~ # lncli newaddress p2tr
+{
+    "address": "bc1pydtk4dws04k5506h9j6slck97d22rflfx4puag99m5ec228pt4kste9z63"
+}
+~ # 
+```
+Save this address, and transfer some BTC to it.
 
-if you already have p2tr address 
+
+ You can use the following command to check your wallet addresses.
 ```
 lncli wallet addresses list
 ```
 
 ## Ensure the balance and going to tap daemon
 
+## Running TAPRoot Asset Daemon Now
+You can't start Tapd before LND Wallet created.
+Step 6:
 ```
-docker exec -it 41535046832b /bin/bash
+./start-tapd.sh start
 ```
+Use the following command to view logs
+```
+ tail -f /var/log/tapd-service.log 
+```
+when you see the following log, it means tapd is running successfully.
+```
+2023-10-24 09:55:40.510 [INF] RPCS: Starting RPC Server
+2023-10-24 09:55:40.511 [INF] RPCS: RPC server listening on 127.0.0.1:10029
+2023-10-24 09:55:40.540 [INF] CONF: Starting HTTPS REST proxy listener at 127.0.0.1:8089
+2023-10-24 09:55:40.542 [INF] RPCS: gRPC proxy started at 127.0.0.1:8089
+2023-10-24 09:55:40.542 [INF] SRVR: Taproot Asset Daemon fully active!
+```
+Now You can start to use tapcli to create your assets.
+Before you start to mint assets, your should check the balance of your wallet.
+which is in step 5. You should at least have 0.0002 BTC in your wallet.
+Use this command to check your balance.
+```
+lncli wallet addresses list
+```
+If you see the balance is not zero, you can start to mint your assets.
 
 ## Mint Token
 ```
-tapcli --network=mainnet --tapddir=/root/.taprooot-assets assets mint --type normal --name beefbux --supply 100 --meta_bytes 66616e746173746963206d6f6e6579 --enable_emission
+tapcli --network=mainnet --tapddir=/root/.taprooot-assets assets mint \
+ --type normal --name beefbux --supply 100 \
+ --meta_bytes "this is your memo" \
+  --enable_emission
 ```
+If you want to mint collectible assets, you can use the other command. 
+You can find it in the taproot asset website or in the community.
 
 ## Finalize Mint
 ```
