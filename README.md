@@ -23,8 +23,11 @@ Start LND Node
 ./start-lnd.sh start
 ```
 If you are running the lntap image before, you can use the following command to start lnd.
+and enter your password to unlock your wallet otherwise your can not use lncli command.
+unless you unlock the lnd can be work, and you can use tapd connect to it.
 ```
 ./start-lnd.sh restart
+lncli unlock
 ```
 You can tail the log by
 ```
@@ -159,3 +162,10 @@ tapcli --network=mainnet --tapddir=~/.taprooot-assets addrs new --asset_id ed43c
 ```
 tapcli --network=mainnet --tapddir=~/.taprooot-assets assets send --addr tapbc1qqqsqqspqqzzpm2rczwagf0vy5z3crjx0jsc2ttzf96v2qmztuu0hdneh00cn4usq5ss89mey0962l2gjldu8z25gfexxg0dfax5qx9efgntn3spswdhelyeqcss9wam6p2ngmv7rc9j50gt7e2rdsjfeh5wj0rjzx9xhlgglntny6trpqss8vg4vmyczxctwjx6hydyh5sj9jcyuankp444az39vr4kjw8tewwepgqswrpww4hxjan9wfek2unsvvaz7tm4de5hvetjwdjjumrfva58gmnfdenjuenfdeskucm98gcnqvpj8yevw3gx
 ```
+
+### Remember to back up your data 
+The data saved in `~/lntap:/root`, or if you want to modify it, 
+please note update 
+ * lntap-run.sh 
+ * lntap-run.cmd 
+ * Dockerfile
