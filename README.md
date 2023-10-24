@@ -10,12 +10,21 @@ After Docker Build Successfully, you can run the docker image.
 
 Step2:
 ```
-docker run --privileged -it uxuy-lntap:latest /bin/sh
+docker run --privileged -it --rm -v ~/lntap:/root uxuy-lntap:latest /bin/sh
 ```
+or 
+```
+./lntap-run.sh
+```
+
 Step 3:
 Start LND Node
 ```
 ./start-lnd.sh start
+```
+If you are running the lntap image before, you can use the following command to start lnd.
+```
+./start-lnd.sh restart
 ```
 You can tail the log by
 ```
