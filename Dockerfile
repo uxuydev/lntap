@@ -21,6 +21,8 @@ FROM alpine
 
 VOLUME ~/lntap/.lnd
 VOLUME ~/lntap/.tapd
+VOLUME ~/lntap/.taprooot-assets
+VOLUME ~/lntap/logs
 
 # Add utilities for quality of life and SSL-related reasons. We also require
 # curl and gpg for the signature verification script.
@@ -56,7 +58,6 @@ EXPOSE 9736 10010 10029 8089
 #CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
 # COPY tls.cert /.lnd/tls.cert
 # COPY tls.key /.lnd/tls.key
-COPY start_services.sh /start_services.sh
 COPY start-lnd.sh /start-lnd.sh
 COPY start-tapd.sh /start-tapd.sh
 RUN chmod +x /start-lnd.sh

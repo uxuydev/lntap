@@ -19,8 +19,8 @@ SERVICE_PATH="lnd --trickledelay=5000 \
     --neutrino.addpeer=faucet.lightning.community \
     --feeurl=https://nodes.lightning.computer/fees/v1/btc-fee-estimates.json
 "
-PID_FILE="/var/run/$SERVICE_NAME.pid"
-LOG_FILE="/var/log/$SERVICE_NAME.log"
+PID_FILE="/root/$SERVICE_NAME.pid"
+LOG_FILE="/root/$SERVICE_NAME.log"
 
 start_service() {
     if [ -f "$PID_FILE" ]; then

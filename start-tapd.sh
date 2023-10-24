@@ -9,8 +9,8 @@ SERVICE_PATH="tapd --network=mainnet \
                   --tapddir=/root/.taprooot-assets \
                   --rpclisten=127.0.0.1:10029 \
                   --restlisten=127.0.0.1:8089"
-PID_FILE="/var/run/$SERVICE_NAME.pid"
-LOG_FILE="/var/log/$SERVICE_NAME.log"
+PID_FILE="/root/$SERVICE_NAME.pid"
+LOG_FILE="/root/$SERVICE_NAME.log"
 
 start_service() {
     if [ -f "$PID_FILE" ]; then
