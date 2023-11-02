@@ -60,13 +60,15 @@ EXPOSE 9736 10010 10029 8089
 # COPY tls.key /.lnd/tls.key
 COPY start-lnd.sh /start-lnd.sh
 COPY start-tapd.sh /start-tapd.sh
+COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /start-lnd.sh
 RUN chmod +x /start-tapd.sh
+RUN chmod +x /entrypoint.sh
 
 #docker run -it uxuy-lntap:latest /bin/sh
 
 #RUN chmod +x /etc/init.d/lnd.service
 #CMD ["/etc/init.d/lnd.service", "start"]
 
-# ENTRYPOINT ["/start_services.sh"]
+ ENTRYPOINT ["/entrypoint.sh"]
 
